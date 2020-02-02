@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -19,7 +19,7 @@ def home():
 
 @app.route('/maps')
 def maps():
-	return "I am onm google maps."
+	return "I am on google maps."
 
 @app.route("/stores", methods = ['GET'])
 def get_stores():
@@ -27,6 +27,12 @@ def get_stores():
 
 @app.route('/stores', methods = ['POST'])
 def create_store():
-	pass
+	request_data = request.get_json()
+	new_store = {
+				'name': request_data['name'],
+				'item': []
+				}
+	stores.append(new_store)
+	return jsonify(new_store)
 
 app.run(port = 5000)
