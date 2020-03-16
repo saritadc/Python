@@ -1,12 +1,20 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 
+from flask_jwt import JWT, jwt_required
+
+from security  import authenticate, identity #importing methods from security.py
 
 app = Flask(__name__)
+app.secret_key = 'mysecretkey' #add seccurity passphrase
 api = Api(app)
+
+jwt = JWT(app,authenticate,identity) #introduces a new endpoint as /auth
 
 stores = [] #empty store initialized in memory
 class Store(Resource):
+
+	@jwt_required()
 	def get(self,name):
 		for store in stores:
 			if store['name']== name:
